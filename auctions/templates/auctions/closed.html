@@ -1,0 +1,34 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {{ message }}
+    <h2>Closed auctions</h2>
+    <div style="display: flex; flex-wrap: wrap;">
+    {% for listing in ActiveListings %}
+        <div class="card" style="width: 18rem; margin-right: 4rem;">
+            <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.item }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ listing.item }}</h5>
+                <h6>Price : $ {{ listing.current_bid }}</h6>
+                <p class="card-text">{{ listing.description }}</p>
+                <p>Status : Closed</p>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <h2>Won auctions</h2>
+    <div style="display: flex; flex-wrap: wrap;">
+    {% for listing in won_listing %}
+        <div class="card" style="width: 18rem; margin-right: 4rem;">
+            <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.item }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ listing.item }}</h5>
+                <h6>Price : $ {{ listing.current_bid }}</h6>
+                <p class="card-text">{{ listing.description }}</p>
+                <p>Status : You win!</p>
+                <a href="{% url 'index' %}bid/{{ listing.watchlist_item.id }}" class="btn btn-primary">See listing</a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

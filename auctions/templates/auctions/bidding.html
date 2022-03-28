@@ -1,0 +1,47 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    
+    <h2>Item : {{ bid_item.item }}</h2>
+    <img src="{{ bid_item.image_url }}" class="img-fluid" alt="{{ bid_item.name }}">
+    <h6>Price : $ {{ bid_item.current_bid }}</h6>
+    <p class="card-text">{{ bid_item.description }}</p>
+    <!-- Add user authentication here, so that users that hasn"t logged in cannot bid but can see the listing price. -->
+    {% if bid_item.status == True %}
+    <form action="{% url 'index' %}bid/{{bid_item.id}}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="bid_price">Enter bid price</label>
+            <input type="number" class="form-control" id="bid_price" name="bid_price">
+        </div>    
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% endif %}
+
+    {{ message }}
+    
+    <h3>Comments</h3>
+    <form action="{% url 'index' %}comment/{{bid_item.id}} %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="new_comment">Add comment :</label>
+            <input type="text" class="form-control" id="new_comment" name="new_comment">
+        </div>    
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <div class="container">
+        {% for each_comment in comments %}
+        <div class="row">
+            <div class="col-2">
+            {{ each_comment.comment_user.username }}
+            </div>
+            <div class="col-8">
+            {{ each_comment.comment }}
+            </div>
+            <div class="col"></div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    
+{% endblock %}

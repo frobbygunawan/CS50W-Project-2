@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {{ message }}
+    <h2>Active Listings</h2>
+    <form action="{% url 'index' %}">
+        <div class="form-group">
+          <label for="categories">Category</label>
+          <select class="form-control" id="categories" name="selected_category">
+            <option value="all_categories">All categories</option>
+            {%  for listing in all_item %}
+            <option value="{{ listing.category }}">{{ listing.category }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-primary">Show category</button>
+        </div>
+    </form>
+    <div style="display: flex; flex-wrap: wrap;">
+    {% for listing in ActiveListings %}
+        <div class="card" style="width: 18rem; margin-right: 4rem;">
+            <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.item }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ listing.item }}</h5>
+                <h6>Price : $ {{ listing.current_bid }}</h6>
+                <p class="card-text">{{ listing.description }}</p>
+                <p>Created by : {{ listing.created_by }}</p>
+                {% if current_user != listing.created_by%}
+                    <a href="{% url 'index' %}bid/{{ listing.id }}" class="btn btn-primary">Bid item</a>
+                    <a href="{% url 'index' %}watchlist/{{ listing.id }}" class="btn btn-primary">
+                        {% if listing.id in ActiveWatchlist %}
+                            Remove from watchlist
+                        {% else %}
+                            Add to watchlist
+                        {% endif %}
+                    </a>
+                {% else %}
+                    <a href="{% url 'index' %}close/{{ listing.id }}" class="btn btn-primary">Close auction</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

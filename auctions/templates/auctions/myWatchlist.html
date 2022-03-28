@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {{ message }}
+    <h2>My Watchlist</h2>
+    <div style="display: flex; flex-wrap: wrap;">
+    
+    {% for listing in myList %}
+        <div class="card" style="width: 18rem; margin-right: 4rem;">
+            <img src="{{ listing.watchlist_item.image_url }}" class="card-img-top" alt="{{ listing.watchlist_item.item }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ listing.watchlist_item.item }}</h5>
+                <h6>Price : $ {{ listing.watchlist_item.current_bid }}</h6>
+                <p class="card-text">{{ listing.watchlist_item.description }}</p>
+                <a href="{% url 'index' %}bid/{{ listing.watchlist_item.id }}" class="btn btn-primary">Bid item</a>
+                <a href="{% url 'index' %}watchlist/{{ listing.watchlist_item.id }}" class="btn btn-primary">
+                    Remove from watchlist
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
